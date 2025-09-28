@@ -1,9 +1,7 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <main>
-    <h1>Teste</h1>
+    <h1>Login</h1>
+    <p>Tela de login</p>
   </main>
 </template>
 
