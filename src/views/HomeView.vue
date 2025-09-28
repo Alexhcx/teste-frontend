@@ -2,10 +2,10 @@
 import { RouterLink } from 'vue-router'
 
 const categories = [
-  { id: 1, name: 'Casa e Cozinha', src: '/images/categories/casa-cozinha.jpg' },
-  { id: 2, name: 'Eletrônicos', src: '/images/categories/eletronicos.jpg' },
+  { id: 1, name: 'Eletrônicos', src: '/images/categories/eletronicos.jpg' },
+  { id: 2, name: 'Roupas e Acessorios', src: '/images/categories/roupas.jpg' },
   { id: 3, name: 'Livros', src: '/images/categories/livros.jpg' },
-  { id: 4, name: 'Roupas', src: '/images/categories/roupas.jpg' },
+  { id: 4, name: 'Casa e Cozinha', src: '/images/categories/casa-cozinha.jpg' },
 ]
 </script>
 
@@ -13,8 +13,8 @@ const categories = [
   <main class="home-container">
     <h1>Nossas Categorias</h1>
     <div class="category-grid">
-      <RouterLink v-for="category in categories" :key="category.id" :to="`/categoria/${category.id}`"
-        class="category-card">
+      <RouterLink v-for="category in categories" :key="category.id"
+        :to="{ name: 'category', params: { id: category.id }, query: { name: category.name } }" class="category-card">
         <img :src="category.src" :alt="category.name" class="category-image">
         <h3>{{ category.name }}</h3>
         <p>Veja nossos produtos</p>
