@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-
-const categories = [
-  { id: 1, name: 'Eletrônicos', src: '/images/categories/eletronicos.jpg' },
-  { id: 2, name: 'Roupas e Acessorios', src: '/images/categories/roupas.jpg' },
-  { id: 3, name: 'Livros', src: '/images/categories/livros.jpg' },
-  { id: 4, name: 'Casa e Cozinha', src: '/images/categories/casa-cozinha.jpg' },
-]
+import { categories } from '../data/categories'
 </script>
 
 <template>
@@ -40,9 +34,7 @@ h1 {
 .category-grid {
   display: flex;
   flex-wrap: wrap;
-  /* Adicione esta linha para permitir a quebra */
   justify-content: center;
-  /* Troque justify-items por justify-content */
   align-items: center;
   gap: 1.5rem;
   width: 100%;

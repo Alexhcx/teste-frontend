@@ -134,7 +134,12 @@ onMounted(fetchProducts)
 <template>
   <main class="products-view-container">
     <div class="header">
-      <h1>Nossos Produtos</h1>
+      <h1 class="center-item">Nossos Produtos</h1>
+      <div class='add-container'>
+        <button @click="handleOpenModal()" class="add-button">
+          Adicionar Produto
+        </button>
+      </div>
     </div>
     <div v-if="isLoading" class="loading-state">
       <p>Carregando produtos...</p>
@@ -159,7 +164,6 @@ onMounted(fetchProducts)
     <div v-else class="empty-state">
       <p>Nenhum produto encontrado.</p>
     </div>
-
     <div v-if="showModal" class="modal-overlay" @click.self="handleCloseModal">
       <div class="modal-content">
         <h2>{{ isEditing ? 'Editar Produto' : 'Adicionar Produto' }}</h2>
@@ -168,7 +172,6 @@ onMounted(fetchProducts)
             <label for="name">Nome do Produto</label>
             <input type="text" id="name" v-model="currentProduct.name" required />
           </div>
-
           <div class="form-group">
             <label for="image">Imagem do Produto</label>
             <input type="file" id="image" @change="handleFileChange" accept="image/*" :required="!isEditing" />
@@ -197,27 +200,31 @@ onMounted(fetchProducts)
         </form>
       </div>
     </div>
-
-    <div class='add-container'>
-      <button @click="handleOpenModal()" class="add-button">
-        Adicionar Produto
-      </button>
-    </div>
   </main>
 </template>
 
 <style scoped>
 .products-view-container {
-  /* padding: 2rem; */
   margin: 2rem;
 }
 
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
+  height: 60px;
 }
+
+.header .center-item {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 50%;
+}
+
+.header .end-item {}
 
 .add-container {
   display: flex;

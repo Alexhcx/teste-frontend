@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router' // Importe o RouterLink
 import { getProducts } from '../services/api'
 
 interface Product {
@@ -61,7 +61,8 @@ const getImageUrl = (imagePath: string) => {
       <div v-for="product in products" :key="product.id" class="product-card">
         <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image">
         <h3 class="product-name">{{ product.name }}</h3>
-        <button class="details-button">Ver Detalhes</button>
+        <RouterLink :to="{ name: 'product-detail', params: { id: product.id } }" class="details-button">Ver Detalhes
+        </RouterLink>
       </div>
     </div>
 
@@ -139,6 +140,10 @@ h1 {
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 1rem;
+  text-decoration: none;
+  /* Adicione esta linha */
+  display: inline-block;
+  /* Adicione esta linha */
 }
 
 .details-button:hover {
