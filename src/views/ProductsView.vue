@@ -25,6 +25,15 @@ const currentProduct = ref<Partial<Product>>({
   idCateg: 1,
 })
 
+const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+const getImageUrl = (imagePath: string) => {
+  if (!imagePath) {
+    return '/path/to/placeholder.jpg';
+  }
+  return `${apiBaseUrl}${imagePath}`;
+}
+
 const fetchProducts = async () => {
   try {
     isLoading.value = true
@@ -103,7 +112,7 @@ onMounted(fetchProducts)
 
     <div v-else-if="products.length > 0" class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-card">
-        <img :src="product.image" :alt="product.name" class="product-image" />
+        <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image" />
         <h3 class="product-name">{{ product.name }}</h3>
         <div class="product-actions">
           <button @click="handleOpenModal(product)" class="edit-button">
@@ -213,6 +222,7 @@ onMounted(fetchProducts)
   height: 15rem;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 320px;
 }
 
 .product-image {
@@ -220,7 +230,6 @@ onMounted(fetchProducts)
   height: 200px;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 1rem;
 }
 
 .product-name {
@@ -294,10 +303,14 @@ onMounted(fetchProducts)
 
 .product-form input,
 .product-form select {
-  width: 100%;
+  width: 95%;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+#idCateg {
+  width: 30%;
 }
 
 .modal-actions {
