@@ -38,14 +38,22 @@ h1 {
 }
 
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  /* Adicione esta linha para permitir a quebra */
+  justify-content: center;
+  /* Troque justify-items por justify-content */
+  align-items: center;
   gap: 1.5rem;
   width: 100%;
   max-width: 1000px;
 }
 
 .category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 8px;
@@ -55,6 +63,8 @@ h1 {
   transition: transform 0.3s, box-shadow 0.3s;
   text-decoration: none;
   color: inherit;
+  width: 300px;
+  height: 280px;
 }
 
 .category-card:hover {
