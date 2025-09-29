@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import {
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
+  type CreateProductFormData,
+  type UpdateProductFormData,
 } from '../services/api'
 
 interface Product {
@@ -19,20 +21,32 @@ const isLoading = ref(true)
 const error = ref<string | null>(null)
 const showModal = ref(false)
 const isEditing = ref(false)
+
 const currentProduct = ref<Partial<Product>>({
   name: '',
   image: '',
   idCateg: 1,
 })
 
-const apiBaseUrl = import.meta.env.VITE_API_URL;
+const imageFile = ref<File | null>(null)
 
+const apiBaseUrl = import.meta.env.VITE_API_URL;
 const getImageUrl = (imagePath: string) => {
   if (!imagePath) {
-    return '/path/to/placeholder.jpg';
+    return 'https://placehold.co/600x400';
   }
   return `${apiBaseUrl}${imagePath}`;
 }
+
+const imagePreviewUrl = computed(() => {
+  if (imageFile.value) {
+    return URL.createObjectURL(imageFile.value)
+  }
+  if (isEditing.value && currentProduct.value.image) {
+    return getImageUrl(currentProduct.value.image)
+  }
+  return null
+})
 
 const fetchProducts = async () => {
   try {
@@ -49,6 +63,7 @@ const fetchProducts = async () => {
 }
 
 const handleOpenModal = (product: Product | null = null) => {
+  imageFile.value = null
   if (product) {
     isEditing.value = true
     currentProduct.value = { ...product }
@@ -63,15 +78,35 @@ const handleCloseModal = () => {
   showModal.value = false
 }
 
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files[0]) {
+    imageFile.value = target.files[0]
+  }
+}
+
 const handleSaveProduct = async () => {
   try {
     if (isEditing.value) {
-      await updateProduct(
-        currentProduct.value.id!,
-        currentProduct.value as Product
-      )
+      const updateData: UpdateProductFormData = {
+        name: currentProduct.value.name,
+        idCateg: currentProduct.value.idCateg,
+      }
+      if (imageFile.value) {
+        updateData.image = imageFile.value
+      }
+      await updateProduct(currentProduct.value.id!, updateData)
     } else {
-      await createProduct(currentProduct.value as Omit<Product, 'id'>)
+      if (!imageFile.value) {
+        alert('Por favor, selecione uma imagem.')
+        return
+      }
+      const createData: CreateProductFormData = {
+        name: currentProduct.value.name!,
+        idCateg: currentProduct.value.idCateg!,
+        image: imageFile.value,
+      }
+      await createProduct(createData)
     }
     await fetchProducts()
     handleCloseModal()
@@ -101,15 +136,12 @@ onMounted(fetchProducts)
     <div class="header">
       <h1>Nossos Produtos</h1>
     </div>
-
     <div v-if="isLoading" class="loading-state">
       <p>Carregando produtos...</p>
     </div>
-
     <div v-else-if="error" class="error-state">
       <p>{{ error }}</p>
     </div>
-
     <div v-else-if="products.length > 0" class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-card">
         <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image" />
@@ -124,7 +156,6 @@ onMounted(fetchProducts)
         </div>
       </div>
     </div>
-
     <div v-else class="empty-state">
       <p>Nenhum produto encontrado.</p>
     </div>
@@ -137,10 +168,17 @@ onMounted(fetchProducts)
             <label for="name">Nome do Produto</label>
             <input type="text" id="name" v-model="currentProduct.name" required />
           </div>
+
           <div class="form-group">
-            <label for="image">URL da Imagem</label>
-            <input type="text" id="image" v-model="currentProduct.image" required />
+            <label for="image">Imagem do Produto</label>
+            <input type="file" id="image" @change="handleFileChange" accept="image/*" :required="!isEditing" />
+            <div v-if="imagePreviewUrl" style="margin-top: 10px;">
+              <p>Preview:</p>
+              <img :src="imagePreviewUrl" alt="Image Preview"
+                style="max-width: 200px; max-height: 200px; object-fit: cover; border-radius: 4px;" />
+            </div>
           </div>
+
           <div class="form-group">
             <label for="idCateg">Categoria</label>
             <select id="idCateg" v-model="currentProduct.idCateg" required>
@@ -159,6 +197,7 @@ onMounted(fetchProducts)
         </form>
       </div>
     </div>
+
     <div class='add-container'>
       <button @click="handleOpenModal()" class="add-button">
         Adicionar Produto
