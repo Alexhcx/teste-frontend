@@ -18,8 +18,13 @@ interface ProductParams {
   idCateg?: number | string
 }
 
-type CreateProductData = Omit<Product, 'id'>
-type UpdateProductData = Partial<CreateProductData>
+export type CreateProductFormData = {
+  name: string
+  image: File
+  idCateg: number
+}
+
+export type UpdateProductFormData = Partial<CreateProductFormData>
 
 export const getProducts = (params: ProductParams = {}) => {
   return apiClient.get<Product[]>('/products', { params })
@@ -29,12 +34,38 @@ export const getProductById = (id: number | string) => {
   return apiClient.get<Product>(`/products/${id}`)
 }
 
-export const createProduct = (productData: CreateProductData) => {
-  return apiClient.post<Product>('/products', productData)
+export const createProduct = (productData: CreateProductFormData) => {
+  const formData = new FormData()
+
+  formData.append('name', productData.name)
+  formData.append('image', productData.image)
+  formData.append('idCateg', String(productData.idCateg))
+
+  return apiClient.post<Product>('/products', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
 }
 
-export const updateProduct = (id: number | string, updateData: UpdateProductData) => {
-  return apiClient.put<Product>(`/products/${id}`, updateData)
+export const updateProduct = (id: number | string, updateData: UpdateProductFormData) => {
+  const formData = new FormData()
+
+  if (updateData.name) {
+    formData.append('name', updateData.name)
+  }
+  if (updateData.idCateg) {
+    formData.append('idCateg', String(updateData.idCateg))
+  }
+  if (updateData.image && updateData.image instanceof File) {
+    formData.append('image', updateData.image)
+  }
+
+  return apiClient.put<Product>(`/products/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
 }
 
 export const deleteProduct = (id: number | string) => {
