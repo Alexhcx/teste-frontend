@@ -2,9 +2,6 @@ import axios from 'axios'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
 
 interface Product {
@@ -61,11 +58,7 @@ export const updateProduct = (id: number | string, updateData: UpdateProductForm
     formData.append('image', updateData.image)
   }
 
-  return apiClient.put<Product>(`/products/${id}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+  return apiClient.put<Product>(`/products/${id}`, formData)
 }
 
 export const deleteProduct = (id: number | string) => {
