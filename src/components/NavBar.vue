@@ -6,7 +6,7 @@ import { RouterLink } from 'vue-router'
   <nav class="navbar">
     <div class="navbar-container">
       <RouterLink to="/" class="nav-item">Home</RouterLink>
-      <RouterLink to="/produtos" class="nav-item">Produtos</RouterLink>
+      <RouterLink to="/products" class="nav-item">Produtos</RouterLink>
     </div>
     <div>
       <RouterLink to="/login" class="nav-item">Login</RouterLink>
@@ -44,7 +44,6 @@ import { RouterLink } from 'vue-router'
   background-color: #e9ecef;
 }
 
-/* Estilo para o link ativo */
 .router-link-exact-active {
   color: #007bff;
   font-weight: bold;

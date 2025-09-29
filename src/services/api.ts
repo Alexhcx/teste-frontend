@@ -8,7 +8,7 @@ const apiClient = axios.create({
 })
 
 interface Product {
-  id: number
+  id: string
   name: string
   image: string
   idCateg: number

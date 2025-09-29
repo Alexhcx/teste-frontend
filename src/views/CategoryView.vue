@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { getProducts } from '../services/api'
 
 interface Product {
-  id: number
+  id: string
   name: string
   image: string
   idCateg: number
@@ -132,7 +132,6 @@ h1 {
   background-color: #0056b3;
 }
 
-/* Estilos para estados */
 .loading-state,
 .error-state,
 .empty-state {
