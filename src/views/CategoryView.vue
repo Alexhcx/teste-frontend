@@ -73,15 +73,18 @@ onMounted(async () => {
 
 h1 {
   margin-bottom: 2rem;
+  margin-top: 2rem;
   color: #333;
 }
 
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 .product-card {
@@ -94,6 +97,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   transition: transform 0.3s, box-shadow 0.3s;
+  width: 250px;
 }
 
 .product-card:hover {

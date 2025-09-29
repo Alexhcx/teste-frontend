@@ -160,8 +160,8 @@ onMounted(fetchProducts)
 
 <style scoped>
 .products-view-container {
-  padding: 2rem;
-  height: 200rem;
+  /* padding: 2rem; */
+  margin: 2rem;
 }
 
 .header {
@@ -195,14 +195,15 @@ onMounted(fetchProducts)
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin: auto;
   gap: 1.5rem;
 }
 
 .product-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
   background: #fff;
   border: 1px solid #ddd;
@@ -230,7 +231,7 @@ onMounted(fetchProducts)
 .product-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 3rem;
 }
 
