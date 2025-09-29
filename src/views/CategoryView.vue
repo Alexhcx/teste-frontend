@@ -17,6 +17,8 @@ const error = ref<string | null>(null)
 
 const route = useRoute()
 
+const apiBaseUrl = import.meta.env.VITE_API_URL;
+
 onMounted(async () => {
   try {
     const categoryId = route.params.id as string
@@ -34,6 +36,13 @@ onMounted(async () => {
   }
 })
 
+const getImageUrl = (imagePath: string) => {
+  if (!imagePath) {
+    return '/path/to/placeholder.jpg';
+  }
+  return `${apiBaseUrl}${imagePath}`;
+}
+
 </script>
 
 <template>
@@ -50,7 +59,7 @@ onMounted(async () => {
 
     <div v-else-if="products.length > 0" class="product-grid">
       <div v-for="product in products" :key="product.id" class="product-card">
-        <img :src="product.image" :alt="product.name" class="product-image">
+        <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image">
         <h3 class="product-name">{{ product.name }}</h3>
         <button class="details-button">Ver Detalhes</button>
       </div>
